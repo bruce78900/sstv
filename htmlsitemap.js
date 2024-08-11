@@ -184,7 +184,8 @@ function displayToc(filter) {
    var tocTable = '';
    var tocHead1 = 'Channel Name';
    var tocTool1 = 'Click to sort by title';
-  
+   var tocHead2 = 'DATE';
+   var tocTool2 = 'Click to sort by date';
    var tocHead3 = 'Categories';
    var tocTool3 = '';
    if (sortBy == "titleasc") { 
