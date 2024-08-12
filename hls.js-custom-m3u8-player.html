@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .kontainer {
+            width: 100%;
+            max-width: 640px;
+            margin: auto;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25% ; /* 16:9 aspect ratio */
+            border-radius: 12px;
+            background-color: #000;
+            overflow: hidden;
+        }
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+        }
+        .control-bar-container {
+            margin-top: 10px; /* Small gap between player and control bar */
+            width: 100%;
+          
+        }
+        .control-bar {
+            max-width: 640px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 12px;
+        }
+        .control-bar button {
+            cursor: pointer;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 15px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        .control-bar button:active {
+            transform: scale(0.95);
+        }
+        #playPauseButton {
+            background-color: blue;
+            color: white;
+        }
+        #fullscreenButton {
+            background-color: orange;
+            color: white;
+        }
+        #volumeSlider {
+            flex: 1;
+            margin: 0 15px;
+            max-width: 100px;
+            height: 10px;
+            border-radius: 12px;
+            background: #ccc;
+            appearance: none;
+            outline: none;
+        }
+        #volumeSlider::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: green;
+            cursor: pointer;
+        }
+        #volumeSlider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: green;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="kontainer">
+    <div class="video-container">
+        <video
+            id="hlsPlayer"
+            class="video-js vjs-default-skin vjs-fluid"
+            preload="auto"
+        >
+            Your browser does not support the video tag or the format of this video.
+        </video>
+    </div>
+
+    <div class="control-bar-container">
+        <div class="control-bar">
+            <button id="playPauseButton">Play</button>
+            <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="0.5">
+            <button id="fullscreenButton">Fullscreen</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script>
+    var video = document.getElementById('hlsPlayer');
+    var hls = new Hls();
+
+    // Load the HLS stream
+    hls.loadSource('M3U8 LINK HERE');
+    hls.attachMedia(video);
+
+    // Set volume to mid-level by default
+    video.volume = 0.5;
+
+    // Play/Pause Button
+    var playPauseButton = document.getElementById('playPauseButton');
+    playPauseButton.addEventListener('click', function() {
+        if (video.paused) {
+            video.play();
+            playPauseButton.textContent = 'Pause';
+        } else {
+            video.pause();
+            playPauseButton.textContent = 'Play';
+        }
+    });
+
+    // Volume Slider
+    var volumeSlider = document.getElementById('volumeSlider');
+    volumeSlider.addEventListener('input', function() {
+        video.volume = this.value;
+    });
+
+    // Fullscreen Button
+    var fullscreenButton = document.getElementById('fullscreenButton');
+    fullscreenButton.addEventListener('click', function() {
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        } else {
+            video.requestFullscreen();
+        }
+    });
+
+    // Disable autoplay
+    video.autoplay = false;
+
+    // Handle fullscreen change
+    video.addEventListener('fullscreenchange', function() {
+        if (document.fullscreenElement) {
+            // Show in-video controls in fullscreen
+            video.controls = true;
+            // Hide the external control bar
+            document.querySelector('.control-bar').style.display = 'none';
+        } else {
+            // Hide in-video controls when not in fullscreen
+            video.controls = false;
+            // Show the external control bar
+            document.querySelector('.control-bar').style.display = 'flex';
+        }
+    });
+</script>
+
+</body>
+</html>
+<br/>
+<center><b>This Channel will take some time to load, please wait.</b></center>
+<br/><br/>
